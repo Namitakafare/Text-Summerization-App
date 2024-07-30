@@ -1,45 +1,46 @@
-import streamlit as st
-from langchain_community.llms import OpenAI  # Update this import
-from langchain.docstore.document import Document
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.chains.summarize import load_summarize_chain
+*Imports (Lines 1-5):
 
-# Function to generate a summary
-def generate_response(txt, openai_api_key):
-    # Instantiate the LLM model
-    llm = OpenAI(temperature=0, openai_api_key=openai_api_key)
-    # Split text
-    text_splitter = CharacterTextSplitter()
-    texts = text_splitter.split_text(txt)
-    # Create multiple documents
-    docs = [Document(page_content=t) for t in texts]
-    # Text summarization
-    chain = load_summarize_chain(llm, chain_type='map_reduce')
-    return chain.run(docs)
+import streamlit as st: This line imports the streamlit library and assigns it the alias st. Streamlit is a Python framework for building web apps.
+from langchain import OpenAI: This line imports the OpenAI class from the langchain library. This class allows interaction with OpenAI's large language models (LLMs).
+from langchain.docstore.document import Document: This line imports the Document class from the langchain.docstore module. This class is used to represent documents for processing.
+from langchain.text_splitter import CharacterTextSplitter: This line imports the CharacterTextSplitter class from the langchain.text_splitter module. This class splits text into individual characters.
+from langchain.chains.summarize import load_summarize_chain: This line imports the load_summarize_chain function from the langchain.chains.summarize module. This function helps build a text summarization pipeline.
 
-# Page title
-st.set_page_config(page_title='🦜🔗 Text Summarization App')
-st.title('🦜🔗 Text Summarization App')
+*generate_response function (Lines 7-14):
+def generate_response(txt):: This line defines a function called generate_response that takes a text input (txt) as a parameter.
+# Instantiate the LLM model: This line is a comment indicating the following line creates an LLM object.
+llm = OpenAI(temperature=0, openai_api_key=openai_api_key): This line creates an instance of the OpenAI class, likely using your OpenAI API key for authentication. The temperature parameter is set to 0, which controls the randomness of the generated text (0 = deterministic).
+# Split text: This line is a comment indicating the following line splits the text.
+text_splitter = CharacterTextSplitter(): This line creates a CharacterTextSplitter object.
+texts = text_splitter.split_text(txt): This line splits the input text (txt) into individual characters using the text_splitter object.
+# Create multiple documents: This line is a comment indicating the following line creates document objects.
+docs = [Document(page_content=t) for t in texts]: This line iterates through the split text (texts) and creates a list of Document objects. Each document object contains one character as its content.
+# Text summarization: This line is a comment indicating the following line performs summarization.
+chain = load_summarize_chain(llm, chain_type='map_reduce'): This line calls the load_summarize_chain function to build a text summarization pipeline using the llm object and the map_reduce chain type (likely for parallel processing).
+return chain.run(docs): This line calls the run method on the summarization pipeline (chain) with the list of documents (docs) as input. This likely performs the summarization and returns the results.
 
-# Text input
-txt_input = st.text_area('Enter your text', '', height=200)
+*Streamlit App Code (Lines 18-32):
 
-# Form to accept user's text input for summarization
-result = []
-with st.form('summarize_form', clear_on_submit=True):
-    openai_api_key = st.text_input('OpenAI API Key', type='password')  # Removed 'disabled'
-    
-    submitted = st.form_submit_button('Submit')
-    if submitted:
-        if not openai_api_key.startswith('sk-'):
-            st.warning('Please enter a valid OpenAI API Key.')
-        elif not txt_input:
-            st.warning('Please enter text before submitting.')
-        else:
-            with st.spinner('Calculating...'):
-                response = generate_response(txt_input, openai_api_key)
-                result.append(response)
+# Page title: This line is a comment indicating the following lines set the page title.
 
-# Display the result
-if result:
-    st.info(result[0])
+st.set_page_config(page_title=' Text Summarization App'): This line sets the title of the Streamlit app to " Text Summarization App".
+
+st.title(' Text Summarization App'): This line displays the title " Text Summarization App" as a heading in the app.
+
+# Text input: This line is a comment indicating the following line creates a text input field.
+
+txt_input = st.text_area('Enter your text', '', height=200): This line creates a text area in the app named "Enter your text" with an initial empty string and a height of 200 pixels. This allows users to enter text for summarization.
+
+# Form to accept user's text input for summarization: This line is a comment indicating the following code block creates a form.
+
+result = []: This line initializes an empty list named result to store the summarization output.
+
+with st.form('summarize_form', clear_on_submit=True):: This line creates a Streamlit form named "summarize_form" that clears the form after submission (`clear_
+
+
+
+
+
+
+
+
